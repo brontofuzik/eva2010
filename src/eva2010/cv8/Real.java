@@ -91,7 +91,7 @@ public class Real {
             // Configure the genetic algorithm.
             configuration.setPopulationSize(populationSize);
             configuration.setSampleChromosome(sampleChromosome(configuration));
-            configuration.setFitnessFunction(new RealFitnessFunction(new RastriginFunction()));
+            configuration.setFitnessFunction(new MyBaldwinianFitnessFunction(new RastriginFunction(), 50, 1.0));
             
             // Natural selectors applied BEFORE genetic operators.
             //configuration.addNaturalSelector(new WeightedRouletteSelector(configuration), true);
@@ -99,7 +99,7 @@ public class Real {
             configuration.addNaturalSelector(new MyNaturalSelector(configuration), true);
 
             // Genetic operators.
-            configuration.addGeneticOperator(new MyLamarckianMutationOperator());
+            //configuration.addGeneticOperator(new MyLamarckianMutationOperator(50, 0.1));
 
             // Natural selectors applied AFTER genetic operators.
             configuration.removeNaturalSelectors(false);
