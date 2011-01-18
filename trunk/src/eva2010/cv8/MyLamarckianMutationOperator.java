@@ -1,24 +1,37 @@
 package eva2010.cv8;
 
 import java.util.List;
-import java.util.Random;
-
-import org.jgap.Configuration;
-import org.jgap.Gene;
 import org.jgap.GeneticOperator;
 import org.jgap.IChromosome;
 import org.jgap.Population;
 
 public class MyLamarckianMutationOperator implements GeneticOperator {
 
+	// -----------------------------------------------------------
+	// Fields
+	// -----------------------------------------------------------
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6255911486613397906L;
 	
-	private int improvementStepCount = 50;
+	private int improvementStepCount;
 	
-	private double improvementRate = 0.2;
+	private double improvementRate;
+	
+	// -----------------------------------------------------------
+	// Constructors
+	// -----------------------------------------------------------
+	
+	public MyLamarckianMutationOperator(int improvementStepCount, double improvementRate) {
+		this.improvementStepCount = improvementStepCount;
+		this.improvementRate = improvementRate;
+	}
+	
+	// -----------------------------------------------------------
+	// Methods
+	// -----------------------------------------------------------
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
