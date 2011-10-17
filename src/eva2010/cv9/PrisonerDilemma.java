@@ -8,14 +8,18 @@ public class PrisonerDilemma {
 
     public static void main(String[] args) {		
         Strategy[] strategies = loadStrategies();
+
         int[] scores = playStrategies(strategies);
+
         printScores(strategies, scores);
     }
+
+    // Private support
     
     private static Strategy[] loadStrategies() {
         
         //change this to wherever your .class files are
-        File strategyDirectory = new File("D:\\projects\\eva2010\\build\\classes\\eva2010\\cv9\\strategies");		
+        File strategyDirectory = new File("C:\\DATA\\projects\\EVA\\build\\classes\\eva2010\\cv9\\strategies");
         String[] strategyNames = strategyDirectory.list();
 		
         Strategy[] strategies = new Strategy[strategyNames.length];
@@ -39,14 +43,14 @@ public class PrisonerDilemma {
 
     private static int[] playStrategies(Strategy[] strategies) {
         int[] scores = new int[strategies.length];
-	for (int strategyIndex1 = 0; strategyIndex1 < strategies.length; strategyIndex1++) {
-            for (int strategyIndex2 = 0; strategyIndex2 < strategies.length; strategyIndex2++) {
-                if (strategyIndex1 == strategyIndex2) {
+	for (int strategy1Index = 0; strategy1Index < strategies.length; strategy1Index++) {
+            for (int strategy2Index = 0; strategy2Index < strategies.length; strategy2Index++) {
+                if (strategy1Index == strategy2Index) {
                     continue;
                 }
 
-                Strategy strategy1 = strategies[strategyIndex1];
-                Strategy strategy2 = strategies[strategyIndex2];
+                Strategy strategy1 = strategies[strategy1Index];
+                Strategy strategy2 = strategies[strategy2Index];
 
                 System.err.print(strategy1.getName() + " vs. " + strategy2.getName() + ": ");
 
@@ -55,28 +59,31 @@ public class PrisonerDilemma {
                 String strategy1Moves = "";
                 String strategy2Moves = "";
 
-                for (int roundIndex = 0; roundIndex < 100; roundIndex++) {
+                for (int round = 0; round < 100; round++) {
+                    // 1. Determine strategy moves.
                     Move strategy1Move = strategy1.nextMove();
                     Move strategy2Move = strategy2.nextMove();
 
-                    Result result1 = new Result(strategy1Move, strategy2Move);
-                    Result result2 = new Result(strategy2Move, strategy1Move);
+                    // 2 Determine strategy results.
+                    Result strategy1Result = new Result(strategy1Move, strategy2Move);
+                    Result strategy2Result = new Result(strategy2Move, strategy1Move);
 
-                    strategy1Score += result1.getMyScore();
-                    strategy2Score += result2.getMyScore();
+                    // 3. Reward strategies.
+                    strategy1.reward(strategy1Result);
+                    strategy2.reward(strategy2Result);
+
+                    strategy1Score += strategy1Result.getMyScore();
+                    strategy2Score += strategy2Result.getMyScore();
                     strategy1Moves += strategy1Move.getLabel();
                     strategy2Moves += strategy2Move.getLabel();
-
-                    strategy1.reward(result1);
-                    strategy2.reward(result2);
                 }
 
                 System.err.println(strategy1Score + ":" + strategy2Score);
                 System.err.println("\t" + strategy1Moves);
                 System.err.println("\t" + strategy2Moves);
 
-                scores[strategyIndex1] += strategy1Score;
-                scores[strategyIndex2] += strategy2Score;
+                scores[strategy1Index] += strategy1Score;
+                scores[strategy2Index] += strategy2Score;
 
                 strategy1.reset();
                 strategy2.reset();
@@ -91,15 +98,15 @@ public class PrisonerDilemma {
             int maxIndex = 0;
 
             for (int i = 0; i < scores.length; i++) {
-				if (scores[i] > maxScore) {
-					maxScore = scores[i];
-					maxIndex = i;
-				}
-			}
+                if (scores[i] > maxScore) {
+                    maxScore = scores[i];
+                    maxIndex = i;
+                }
+            }
 
-			System.out.printf("%50s  %d", strategies[maxIndex].getName(), scores[maxIndex]);
-			System.out.println();
-			scores[maxIndex] = Integer.MIN_VALUE;
+            System.out.printf("%50s  %d", strategies[maxIndex].getName(), scores[maxIndex]);
+            System.out.println();
+            scores[maxIndex] = Integer.MIN_VALUE;
         }
     }
 }
