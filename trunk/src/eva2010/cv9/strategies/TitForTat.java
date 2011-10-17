@@ -19,9 +19,10 @@ public class TitForTat extends Strategy {
 
     @Override
     public Move nextMove() {
-        if (lastMove == null)
+        if (lastMove == null) {
             return Move.COOPERATE;
-        return lastMove.getOpponentsMove();
+        }
+        return lastMove.getOponentsMove();
     }
 
     @Override

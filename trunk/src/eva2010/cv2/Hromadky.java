@@ -64,7 +64,7 @@ public class Hromadky {
     // </editor-fold>
 
     public static void main(String[] args) {
-        // Read properties from file.
+        // Read the properties from file.
         Properties properties = new Properties();
         try {
             InputStream propertiesInputStream = new FileInputStream("cv2.properties");
@@ -106,7 +106,7 @@ public class Hromadky {
         processResults(differenceLogFilename);
     }
 
-    private static void run(int number) {
+    private static void run(int runIndex) {
         Configuration configuration = new DefaultConfiguration();
         Configuration.reset();
         try {
@@ -129,15 +129,15 @@ public class Hromadky {
 
             // Create the population.
             Genotype population = Genotype.randomInitialGenotype(configuration);
-
             System.out.println("Generation -1: " + population.getFittestChromosome().toString());
 
             OutputStreamWriter fitnessStreamWriter = new OutputStreamWriter(
-                new FileOutputStream(fitnessLogFilename + "." + number));
+                new FileOutputStream(fitnessLogFilename + "." + runIndex));
 
             OutputStreamWriter differenceStreamWriter = new OutputStreamWriter(
-                new FileOutputStream(differenceLogFilename + "." + number));
+                new FileOutputStream(differenceLogFilename + "." + runIndex));
 
+            // Evolve the population.
             for (int generationIndex = 0; generationIndex < maxGenerationCount; generationIndex++) {
                 population.evolve();
                 StatsLogger.log(population, fitnessStreamWriter);
@@ -147,7 +147,7 @@ public class Hromadky {
             }
 
             OutputStreamWriter fittestChromosomeStreamWriter = new OutputStreamWriter(
-                new FileOutputStream(fittestChromosomeLogFilename + "." + number));
+                new FileOutputStream(fittestChromosomeLogFilename + "." + runIndex));
 
             IChromosome fittestChromosome = population.getFittestChromosome();
             for (int geneIndex = 0; geneIndex < fittestChromosome.getGenes().length; geneIndex++) {

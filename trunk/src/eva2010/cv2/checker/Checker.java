@@ -8,43 +8,38 @@ import java.util.Scanner;
 
 public class Checker {
 
-	public static void main(String[] args) {
-		
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(args[0]));
+    public static void main(String[] args) {
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(args[0]));
 			
-			double[] vahy = new double[10];
+            double[] weights = new double[10];
 			
-			String line;
-			while ((line = in.readLine()) != null) {
-				Scanner lineScanner = new Scanner(line);
-				lineScanner.useDelimiter(" ");
+            String line;
+            while ((line = in.readLine()) != null) {
+                Scanner scanner = new Scanner(line);
+                scanner.useDelimiter(" ");
 				
-				double weight = lineScanner.nextDouble();
-				int bin = lineScanner.nextInt();
+                double weight = scanner.nextDouble();
+                int bin = scanner.nextInt();
 				
-				vahy[bin] += weight;
-			}
+                weights[bin] += weight;
+            }
 			
-			double min = Integer.MAX_VALUE;
-			double max = Integer.MIN_VALUE;
+            double min = Integer.MAX_VALUE;
+            double max = Integer.MIN_VALUE;
 			
-			for (int i = 0; i < 10; i++) {
-				min = Math.min(vahy[i], min);
-				max = Math.max(vahy[i], max);
-				
-				System.out.println("" + i + ": " + vahy[i]);
-			}
-			
-			System.out.println("difference: " + (max - min));
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+            for (int i = 0; i < 10; i++) {
+                min = Math.min(weights[i], min);
+                max = Math.max(weights[i], max);
 
-	}
-
+                System.out.println("" + i + ": " + weights[i]);
+            }
+			
+            System.out.println("difference: " + (max - min));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
